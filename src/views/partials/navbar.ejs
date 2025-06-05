@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LibreríaTCM</title>
+    <!-- Carga Tailwind vía CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <!-- Logo / nombre de la app -->
+          <div class="flex-shrink-0 flex items-center">
+            <a href="/" class="text-2xl font-bold text-blue-600 hover:text-blue-800">
+              LibreríaTCM
+            </a>
+          </div>
+          <!-- Enlaces de navegación -->
+          <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+            <a href="/" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+              Inicio
+            </a>
+            <% if (!user) { %>
+              <a href="/login" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+                Login
+              </a>
+              <a href="/register" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+                Register
+              </a>
+            <% } else { %>
+              <a href="/libros" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+                Libros
+              </a>
+              <a href="/logout" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+                Logout
+              </a>
+            <% } %>
+          </div>
+          <!-- Usuario logueado -->
+          <% if (user) { %>
+            <div class="flex items-center">
+              <span class="text-gray-700 mr-4">Hola, <%= user.nombre %></span>
+            </div>
+          <% } %>
+          <!-- Botón de menú móvil -->
+          <div class="-mr-2 flex items-center sm:hidden">
+            <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+              <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <path class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menú móvil (oculto por defecto) -->
+      <div id="mobile-menu" class="sm:hidden hidden">
+        <div class="pt-2 pb-3 space-y-1">
+          <a href="/" class="block pl-3 pr-4 py-2 border-l-4 border-blue-500 bg-blue-50 text-blue-700 text-base font-medium">
+            Inicio
+          </a>
+          <% if (!user) { %>
+            <a href="/login" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
+              Login
+            </a>
+            <a href="/register" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
+              Register
+            </a>
+          <% } else { %>
+            <a href="/libros" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
+              Libros
+            </a>
+            <a href="/logout" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
+              Logout
+            </a>
+          <% } %>
+        </div>
+      </div>
+
+      <script>
+        // Toggle del menú móvil
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        btn && btn.addEventListener('click', () => {
+          menu.classList.toggle('hidden');
+        });
+      </script>
+    </nav>
+  </body>
+</html>

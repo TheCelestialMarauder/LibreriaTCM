@@ -90,5 +90,61 @@ module.exports = {
         formData
       });
     }
+  },
+
+  // Mostrar formulario de login
+  async mostrarFormularioLogin(req, res) {
+    res.render('auth/login', { error: null, formData: {} });
+  },
+
+  // Procesar login
+  async procesarLogin(req, res) {
+    const { email, password } = req.body;
+    const formData = { email };
+
+    try {
+      // 1) Buscar usuario por email
+      const usuario = await usuarioModel.obtenerPorEmail(email);
+      if (!usuario) {
+        return res.render('auth/login', {
+          error: 'Email o contraseña incorrectos.',
+          formData
+        });
+      }
+
+      // 2) Comparar contraseña
+      const match = await bcrypt.compare(password, usuario.password);
+      if (!match) {
+        return res.render('auth/login', {
+          error: 'Email o contraseña incorrectos.',
+          formData
+        });
+      }
+
+      // 3) Guardar información mínima en session (sin la contraseña)
+      req.session.user = {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        id_rol: usuario.id_rol,
+        email: usuario.email
+      };
+
+      // 4) Redirigir a la página principal o a “mis-libros”
+      res.redirect('/');
+    } catch (err) {
+      console.error('Error procesando login:', err);
+      res.render('auth/login', {
+        error: 'Ocurrió un error. Intenta de nuevo.',
+        formData
+      });
+    }
+  },
+
+  // Logout sencillo
+  logout(req, res) {
+    req.session.destroy(err => {
+      if (err) console.error('Error al destruir sesión:', err);
+      res.redirect('/');
+    });
   }
 };

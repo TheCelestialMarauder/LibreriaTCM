@@ -36,9 +36,9 @@ app.set('views', path.join(__dirname, 'views'));
 const authRoutes = require('./routes/auth');
 app.use('/', authRoutes);
 
-// Ruta raíz (puede quedarse en blanco o mostrar una vista simple)
+// Ruta raíz
 app.get('/', (req, res) => {
-  res.send('Bienvenido a LibreríaTCM. Ve a /register o /login para comenzar.');
+  res.render('index');
 });
 
 // Iniciar servidor

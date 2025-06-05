@@ -1,98 +1,125 @@
-<!-- src/views/auth/register.ejs -->
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <title>Registro - LibreríaTCM</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@3.x/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <!-- Carga Tailwind vía CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100">
-    <div class="flex items-center justify-center h-screen">
-      <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h1 class="text-2xl font-bold mb-6 text-center">Regístrate</h1>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Barra de navegación -->
+    <%- include('../partials/navbar') %>
 
-        <!-- Mostrar mensaje de error si existe -->
+    <!-- Contenedor principal -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
+          Crea tu cuenta
+        </h1>
+
+        <!-- Mensaje de error si existe -->
         <% if (error) { %>
-          <p class="bg-red-200 text-red-800 p-2 rounded mb-4"><%= error %></p>
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+            <p><%= error %></p>
+          </div>
         <% } %>
 
-        <form action="/register" method="POST" class="space-y-4">
+        <form action="/register" method="POST" class="space-y-5">
           <!-- Nombre -->
           <div>
-            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+            <label for="nombre" class="block text-sm font-medium text-gray-700">
+              Nombre completo
+            </label>
             <input
               type="text"
               name="nombre"
               id="nombre"
               value="<%= formData.nombre || '' %>"
-              class="mt-1 block w-full border border-gray-300 rounded p-2"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Ej. Juan Pérez"
               required
             />
           </div>
 
           <!-- Email -->
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <label for="email" class="block text-sm font-medium text-gray-700">
+              Correo electrónico
+            </label>
             <input
               type="email"
               name="email"
               id="email"
               value="<%= formData.email || '' %>"
-              class="mt-1 block w-full border border-gray-300 rounded p-2"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="tu@correo.com"
               required
             />
           </div>
 
           <!-- Contraseña -->
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+            <label for="password" class="block text-sm font-medium text-gray-700">
+              Contraseña
+            </label>
             <input
               type="password"
               name="password"
               id="password"
-              class="mt-1 block w-full border border-gray-300 rounded p-2"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="********"
               required
             />
           </div>
 
           <!-- Selección de rol -->
           <div>
-            <label for="rolSelec" class="block text-sm font-medium text-gray-700">Rol</label>
+            <label for="rolSelec" class="block text-sm font-medium text-gray-700">
+              ¿Qué eres?
+            </label>
             <select
               name="rolSelec"
               id="rolSelec"
-              class="mt-1 block w-full border border-gray-300 rounded p-2"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             >
-              <option value="">-- Selecciona un rol --</option>
+              <option value="">-- Selecciona tu rol --</option>
               <% roles.forEach(r => { %>
                 <option
                   value="<%= r.nombre %>"
                   <%= formData.rolSelec === r.nombre ? 'selected' : '' %>
-                ><%= r.nombre.charAt(0).toUpperCase() + r.nombre.slice(1) %></option>
+                >
+                  <%= r.nombre.charAt(0).toUpperCase() + r.nombre.slice(1) %>
+                </option>
               <% }) %>
             </select>
           </div>
 
           <!-- Botón Registrar -->
-          <div class="text-center">
+          <div>
             <button
               type="submit"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Registrarme
             </button>
           </div>
         </form>
 
-        <p class="mt-4 text-center text-gray-600">
+        <p class="mt-6 text-center text-gray-600">
           ¿Ya tienes cuenta?
-          <a href="/login" class="text-blue-600 hover:underline">Inicia sesión</a>
+          <a href="/login" class="text-blue-600 hover:underline">
+            Inicia sesión
+          </a>
         </p>
       </div>
-    </div>
+    </main>
+
+    <!-- Footer opcional -->
+    <footer class="bg-white shadow-inner py-4">
+      <div class="text-center text-gray-600 text-sm">
+        &copy; 2025 LibreríaTCM. Todos los derechos reservados.
+      </div>
+    </footer>
   </body>
 </html>

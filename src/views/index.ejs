@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inicio - LibreríaTCM</title>
+    <!-- Carga Tailwind vía CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Barra de navegación -->
+    <%- include('partials/navbar') %>
+
+    <!-- Contenido principal -->
+    <main class="flex-grow container mx-auto px-4 py-12">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+          Bienvenido a LibreríaTCM
+        </h1>
+        <p class="text-lg text-gray-600 mb-6">
+          Explora, vende y compra tus libros favoritos. Regístrate o inicia sesión para empezar.
+        </p>
+        <% if (!user) { %>
+          <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded mr-4">
+            Regístrate
+          </a>
+          <a href="/login" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded">
+            Iniciar Sesión
+          </a>
+        <% } else { %>
+          <a href="/libros" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded">
+            Ver Libros
+          </a>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Footer opcional -->
+    <footer class="bg-white shadow-inner py-4">
+      <div class="text-center text-gray-600 text-sm">
+        &copy; 2025 LibreríaTCM. Todos los derechos reservados.
+      </div>
+    </footer>
+  </body>
+</html>
