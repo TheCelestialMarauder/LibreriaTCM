@@ -1,0 +1,67 @@
+<!-- src/views/libros/detalle.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= libro.titulo %> - Detalle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('../partials/navbar') %>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-3xl font-bold mb-4"><%= libro.titulo %></h1>
+        <p class="text-gray-700 mb-2">
+          <strong>Autor:</strong> <%= libro.autor || 'N/A' %>
+        </p>
+        <p class="text-gray-700 mb-2">
+          <strong>Precio:</strong>
+          $<%= parseFloat(libro.precio).toFixed(2) %>
+        </p>
+        <p class="text-gray-700 mb-2">
+          <strong>Stock:</strong> <%= libro.stock %>
+        </p>
+        <p class="text-gray-700 mb-2">
+          <strong>Categoría:</strong> <%= libro.categoria || 'Sin categoría' %>
+        </p>
+        <p class="text-gray-700 mb-4">
+          <strong>Descripción:</strong> <%= libro.descripcion || 'Sin descripción' %>
+        </p>
+        <p class="text-gray-700 mb-4">
+          <strong>Vendedor:</strong> <%= libro.vendedor %> (<%= libro.vendedor_email %>)
+        </p>
+
+        <% if (user && (user.id_rol === 1 || user.id === libro.id_vendedor)) { %>
+          <div class="flex space-x-4">
+            <a
+              href="/libros/edit/<%= libro.id %>"
+              class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded"
+            >
+              Editar
+            </a>
+            <!-- Formulario POST para eliminar -->
+            <form
+              action="/libros/delete/<%= libro.id %>"
+              method="POST"
+              onsubmit="return confirm('¿Seguro que quieres eliminar este libro?');"
+            >
+              <button
+                type="submit"
+                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+              >
+                Eliminar
+              </button>
+            </form>
+          </div>
+        <% } %>
+      </div>
+    </main>
+
+    <footer class="bg-white shadow-inner py-4">
+      <div class="text-center text-gray-600 text-sm">
+        &copy; 2025 LibreríaTCM
+      </div>
+    </footer>
+  </body>
+</html>

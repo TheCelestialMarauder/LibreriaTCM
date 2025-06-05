@@ -1,0 +1,63 @@
+<!-- src/views/libros/index.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Libros - LibreríaTCM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('../partials/navbar') %>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Todos los libros</h1>
+        <% if (user && (user.id_rol === 1 || user.id_rol === 2)) { %>
+          <a
+            href="/libros/create/nuevo"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+          >
+            + Nuevo Libro
+          </a>
+        <% } %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% libros.forEach(libro => { %>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-4">
+              <h2 class="text-xl font-semibold mb-2"><%= libro.titulo %></h2>
+              <p class="text-gray-600">
+                <strong>Autor:</strong> <%= libro.autor || 'N/A' %>
+              </p>
+              <p class="text-gray-600">
+                <strong>Precio:</strong>
+                $<%= parseFloat(libro.precio).toFixed(2) %>
+              </p>
+              <p class="text-gray-600">
+                <strong>Stock:</strong> <%= libro.stock %>
+              </p>
+              <p class="text-gray-600">
+                <strong>Categoría:</strong> <%= libro.categoria || 'Sin categoría' %>
+              </p>
+              <p class="text-gray-600">
+                <strong>Vendedor:</strong> <%= libro.vendedor %>
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 text-right">
+              <a href="/libros/<%= libro.id %>" class="text-blue-600 hover:underline">
+                Ver detalles
+              </a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </main>
+
+    <footer class="bg-white shadow-inner py-4">
+      <div class="text-center text-gray-600 text-sm">
+        &copy; 2025 LibreríaTCM
+      </div>
+    </footer>
+  </body>
+</html>

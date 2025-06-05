@@ -36,6 +36,10 @@ app.set('views', path.join(__dirname, 'views'));
 const authRoutes = require('./routes/auth');
 app.use('/', authRoutes);
 
+
+const librosRoutes = require('./routes/libros');
+app.use('/libros', librosRoutes);
+
 // Ruta raíz
 app.get('/', (req, res) => {
   res.render('index');
