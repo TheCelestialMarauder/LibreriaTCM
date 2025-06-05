@@ -43,6 +43,10 @@ app.use('/libros', librosRoutes);
 const comprasRoutes = require('./routes/compras');
 app.use('/compras', comprasRoutes);
 
+
+const usuariosRoutes = require('./routes/usuarios');
+app.use('/usuarios', usuariosRoutes);
+
 // Ruta de inicio
 app.get('/', (req, res) => {
   res.render('index');

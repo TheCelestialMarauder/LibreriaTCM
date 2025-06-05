@@ -1,61 +1,74 @@
 <!-- src/views/partials/navbar.ejs -->
-<nav class="bg-white shadow-md">
+<nav class="bg-white shadow">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
-      <!-- Logo / nombre de la app -->
-      <div class="flex-shrink-0 flex items-center">
+      <!-- Izquierda: logo y enlaces principales -->
+      <div class="flex items-center space-x-6">
         <a href="/" class="text-2xl font-bold text-blue-600 hover:text-blue-800">
           LibreríaTCM
         </a>
+        <a href="/libros" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+          Libros
+        </a>
+        <a href="/stats" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+          Estadísticas
+        </a>
       </div>
 
-      <!-- Enlaces principales de navegación -->
-      <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-        <a href="/" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
-          Inicio
-        </a>
-        <a href="/libros" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
-          Todos los Libros
-        </a>
-
+      <!-- Derecha: zona de autenticación / usuario -->
+      <div class="flex items-center space-x-4">
         <% if (!user) { %>
-          <!-- Si NO hay sesión iniciada -->
-          <a href="/login" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+          <a href="/login" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
             Login
           </a>
-          <a href="/register" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
+          <a href="/register" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
             Register
           </a>
         <% } else { %>
-          <!-- Si hay sesión, mostrar diferentes enlaces según rol -->
-          <% if (user.id_rol === 1 || user.id_rol === 2) { %>
-            <!-- Vendedor (2) o Admin (1) -->
-            <a href="/libros/mis-libros" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
-              Mis Libros
-            </a>
-            <a href="/libros/create/nuevo" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
-              + Nuevo Libro
+          <!-- Comprador: carrito -->
+          <% if (user.id_rol === 3) { %>
+            <a href="/compras/carrito" class="relative">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.2 6H19m-12 0a1 1 0 11-2 0 1 1 0 012 0zm12 0a1 1 0 11-2 0 1 1 0 012 0z" />
+              </svg>
             </a>
           <% } %>
-          <a href="/logout" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-gray-900">
-            Logout
-          </a>
+
+          <!-- Menú de usuario -->
+          <div class="relative">
+            <button id="user-menu-button" type="button" class="flex items-center text-gray-700 hover:text-blue-600 focus:outline-none">
+              <span class="mr-2 text-sm font-medium"><%= user.nombre %></span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-20">
+              <% if (user.id_rol === 1) { %>
+                <a href="/usuarios" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Gestión Usuarios</a>
+              <% } %>
+              <% if (user.id_rol === 2 || user.id_rol === 1) { %>
+                <a href="/libros/mis-libros" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Libros</a>
+                <a href="/libros/create/nuevo" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">+ Nuevo Libro</a>
+              <% } %>
+              <% if (user.id_rol === 3) { %>
+                <a href="/compras/carrito" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Ver Carrito</a>
+              <% } %>
+              <a href="/usuarios/perfil" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+              <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+            </div>
+          </div>
         <% } %>
       </div>
 
-      <!-- Saludo al usuario (solo si está logueado) -->
-      <% if (user) { %>
-        <div class="flex items-center">
-          <span class="text-gray-700 mr-4">Hola, <%= user.nombre %></span>
-        </div>
-      <% } %>
-
-      <!-- Botón de menú móvil -->
-      <div class="-mr-2 flex items-center sm:hidden">
-        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+      <!-- Botón para menú móvil (oculto en md+) -->
+      <div class="-mr-2 flex items-center md:hidden">
+        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 text-gray-700 hover:text-blue-600 focus:outline-none">
           <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-            <path class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
@@ -63,30 +76,55 @@
   </div>
 
   <!-- Menú móvil (oculto por defecto) -->
-  <div id="mobile-menu" class="sm:hidden hidden">
-    <div class="pt-2 pb-3 space-y-1">
-      <a href="/" class="block pl-3 pr-4 py-2 border-l-4 border-blue-500 bg-blue-50 text-blue-700 text-base font-medium">Inicio</a>
-      <a href="/libros" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">Todos los Libros</a>
+  <div id="mobile-menu" class="hidden md:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <a href="/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Inicio</a>
+      <a href="/libros" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Libros</a>
+      <a href="/stats" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Estadísticas</a>
 
       <% if (!user) { %>
-        <a href="/login" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">Login</a>
-        <a href="/register" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">Register</a>
+        <a href="/login" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Login</a>
+        <a href="/register" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Register</a>
       <% } else { %>
-        <% if (user.id_rol === 1 || user.id_rol === 2) { %>
-          <a href="/libros/mis-libros" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">Mis Libros</a>
-          <a href="/libros/create/nuevo" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">+ Nuevo Libro</a>
+        <% if (user.id_rol === 1 || user.id_rol === 3) { %>
+          <a href="/compras/carrito" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Carrito</a>
         <% } %>
-        <a href="/logout" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">Logout</a>
+        <% if (user.id_rol === 1) { %>
+          <a href="/usuarios" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Gestión Usuarios</a>
+        <% } %>
+        <% if (user.id_rol === 1 || user.id_rol === 2) { %>
+          <a href="/libros/mis-libros" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Mis Libros</a>
+          <a href="/libros/create/nuevo" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">+ Nuevo Libro</a>
+        <% } %>
+        <a href="/usuarios/perfil" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Mi Perfil</a>
+        <a href="/logout" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Logout</a>
       <% } %>
     </div>
   </div>
 
   <script>
-    // Toggle del menú móvil
-    const btn = document.getElementById('mobile-menu-button');
-    const menu = document.getElementById('mobile-menu');
-    btn && btn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
+    // Toggle menú de usuario
+    const userBtn = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    if (userBtn) {
+      userBtn.addEventListener('click', () => {
+        userMenu.classList.toggle('hidden');
+      });
+      // Cerrar si clic fuera
+      document.addEventListener('click', (e) => {
+        if (userBtn && !userBtn.contains(e.target) && !userMenu.contains(e.target)) {
+          userMenu.classList.add('hidden');
+        }
+      });
+    }
+
+    // Toggle menú móvil
+    const mobileBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn) {
+      mobileBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
   </script>
 </nav>

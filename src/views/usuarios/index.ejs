@@ -1,0 +1,79 @@
+<!-- src/views/usuarios/index.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Usuarios - LibreríaTCM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('../partials/navbar') %>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Usuarios</h1>
+        <a
+          href="/usuarios/create"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+        >
+          + Nuevo Usuario
+        </a>
+      </div>
+
+      <% if (error) { %>
+        <p class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4"><%= error %></p>
+      <% } %>
+
+      <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+        <table class="min-w-full text-left">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2">ID</th>
+              <th class="px-4 py-2">Nombre</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Rol</th>
+              <th class="px-4 py-2">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% usuarios.forEach(u => { %>
+              <tr class="<%= usuarios.indexOf(u) % 2 === 0 ? 'bg-white' : 'bg-gray-50' %>">
+                <td class="border px-4 py-2"><%= u.id %></td>
+                <td class="border px-4 py-2"><%= u.nombre %></td>
+                <td class="border px-4 py-2"><%= u.email %></td>
+                <td class="border px-4 py-2 capitalize"><%= u.rol %></td>
+                <td class="border px-4 py-2 space-x-2">
+                  <a
+                    href="/usuarios/edit/<%= u.id %>"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded"
+                  >
+                    Editar
+                  </a>
+                  <form
+                    action="/usuarios/delete/<%= u.id %>"
+                    method="POST"
+                    class="inline-block"
+                    onsubmit="return confirm('¿Eliminar usuario <%= u.nombre %>?');"
+                  >
+                    <button
+                      type="submit"
+                      class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded"
+                    >
+                      Eliminar
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="bg-white shadow-inner py-4 mt-auto">
+      <div class="text-center text-gray-600 text-sm">
+        &copy; 2025 LibreríaTCM
+      </div>
+    </footer>
+  </body>
+</html>
