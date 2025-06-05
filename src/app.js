@@ -1,4 +1,3 @@
-// src/app.js
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -6,41 +5,45 @@ const path = require('path');
 
 const app = express();
 
-// Configuración de sesiones en memoria
+// Configuración de sesiones
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 }, // 1 hora
+    cookie: { maxAge: 1000 * 60 * 60 },
   })
 );
 
-// Middleware para exponer datos de usuario en las vistas
+// Exponer usuario en todas las vistas
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
 
-// Body parser para formularios
+// Body parser
 app.use(express.urlencoded({ extended: false }));
 
-// Carpeta de archivos estáticos
+// Público: archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configurar motor de vistas EJS
+// Motor de vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Rutas de autenticación (registro, login, logout)
+// Rutas de autenticación
 const authRoutes = require('./routes/auth');
 app.use('/', authRoutes);
 
-
+// Rutas de libros
 const librosRoutes = require('./routes/libros');
 app.use('/libros', librosRoutes);
 
-// Ruta raíz
+// Rutas de compras (carrito, checkout)
+const comprasRoutes = require('./routes/compras');
+app.use('/compras', comprasRoutes);
+
+// Ruta de inicio
 app.get('/', (req, res) => {
   res.render('index');
 });

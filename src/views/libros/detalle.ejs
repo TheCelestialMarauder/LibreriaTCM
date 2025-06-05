@@ -53,6 +53,14 @@
                 Eliminar
               </button>
             </form>
+            <form action="/compras/add/<%= libro.id %>" method="POST" class="mt-6">
+                <button
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded"
+                >
+                Añadir al Carrito
+                </button>
+            </form>
           </div>
         <% } %>
       </div>

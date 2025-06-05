@@ -90,11 +90,24 @@ async function eliminarLibro(id) {
   return result.affectedRows;
 }
 
+// Nuevo método para disminuir stock de un libro
+async function disminuirStock(id, cantidad) {
+  const query = `
+    UPDATE libros
+    SET stock = stock - ?
+    WHERE id = ? AND stock >= ?
+  `;
+  // Solo ejecutará si stock >= cantidad
+  const [result] = await pool.query(query, [cantidad, id, cantidad]);
+  return result.affectedRows; // 1 si se pudo restar, 0 si no había stock suficiente
+}
+
 module.exports = {
   obtenerTodos,
   obtenerPorId,
   obtenerPorVendedor,
   crearLibro,
   actualizarLibro,
-  eliminarLibro
+  eliminarLibro,
+  disminuirStock
 };
